@@ -8,19 +8,19 @@ const socketio = require("socket.io");
 const server = http.createServer(app);
 const io = socketio(server);
 
-app.use(helmet({
-    contentSecurityPolicy: {
-        useDefaults: true,
-        directives: {
-            "default-src": ["'self'"],
-            "script-src": ["'self'", "'wasm-unsafe-eval'", "'inline-speculation-rules'", "https://apis.google.com", "https://cdnjs.cloudflare.com", "https://cdn.socket.io"],
-            "style-src": ["'self'", "https://cdnjs.cloudflare.com"],
-            "connect-src": ["'self'", "https://cdn.socket.io"],
-            "img-src": ["'self'", "data:"],
-            "font-src": ["'self'", "https://cdnjs.cloudflare.com"],
-        },
-    },
-}));
+// app.use(helmet({
+//     contentSecurityPolicy: {
+//         useDefaults: true,
+//         directives: {
+//             "default-src": ["'self'"],
+//             "script-src": ["'self'", "'wasm-unsafe-eval'", "'inline-speculation-rules'", "https://apis.google.com", "https://cdnjs.cloudflare.com", "https://cdn.socket.io"],
+//             "style-src": ["'self'", "https://cdnjs.cloudflare.com"],
+//             "connect-src": ["'self'", "https://cdn.socket.io"],
+//             "img-src": ["'self'", "data:"],
+//             "font-src": ["'self'", "https://cdnjs.cloudflare.com"],
+//         },
+//     },
+// }));
 
 app.set("view engine", "ejs");
 app.set('views', path.join(__dirname, 'views'));
@@ -30,6 +30,7 @@ io.on("connection", function(socket){
     socket.on("send-location", function(data){
         io.emit("receive-location", {id: socket.id, ...data});
     });
+
 
     socket.on("disconnect", function(){
         io.emit("user-disconnect")
